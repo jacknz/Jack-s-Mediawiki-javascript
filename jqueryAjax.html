@@ -1,0 +1,70 @@
+<html>
+	<head>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		
+/*
+ 	**jQuery Ajax example**
+ 	
+ 	You need to save these two additional files to the same dir as this file:
+	
+	AddNum.php:
+	
+ 	echo $_REQUEST['number1'] + $_REQUEST['number2'];
+
+	addNum.js:
+	
+	document.write(parseInt(number1.value) + parseInt(number2.value));
+*/	
+ 
+			function addNumbers(state) {
+
+				var number1 = $('#number1').attr('value');
+
+				var number2 = $('#number2').attr('value');
+
+				if (arguments[0] == "add") { 
+
+				   $.post("AddNum.php", { number1: number1, number2: number2 },
+
+					   function(data){
+
+							$('#divid').replaceWith(data);
+							
+						}
+					); 
+				}
+				
+				else if (arguments[0] == "replace") {
+					
+					$.post("addNum.js", { number1: number1, number2: number2  },
+
+					   function(data){
+				   
+							return false;
+						}
+					,
+					"script"
+					); 
+				}
+				
+				else $('#divid2').load('AddNum.php',{ number1 : number1, number2 : number2 });  
+			}
+		</script>
+	</head>
+	<body>
+		<input type="text" id="number1" value="0" /> + <input type="text" id="number2" value="0" />
+
+		<input type="button" onclick="addNumbers('add');" value="= Add" />
+
+		<input type="button" onclick="addNumbers('load');" value="= Load" />
+
+		<input type="button" onclick="addNumbers('replace');" value="= Replace" />
+		<br />
+
+		<div id="divid"></div>
+		<br />
+
+		<div id="divid2"></div>
+ 	 </body>
+</html>
